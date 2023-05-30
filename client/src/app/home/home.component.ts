@@ -9,22 +9,25 @@ import { User } from '../_models/user';
 })
 export class HomeComponent implements OnInit{
 registerMode = false;
-users: any;
 
-constructor(private http: HttpClient){}
+constructor(){}
 
 ngOnInit(): void {
-  this.getUsers();
+  // this.getUsers();
 }
 
 registerToggle(){
   this.registerMode = !this.registerMode;
 }
 
-getUsers() {
-  const user: User = JSON.parse(localStorage.getItem('user'));
-  const headers = {'Authorization': `Bearer ${user.token}`};
-  this.http.get('https://localhost:5266/api/users', {headers}).subscribe(users => this.users = users);
-}
+// getUsers() {
+//   const user: User = JSON.parse(localStorage.getItem('user'));
+//   const headers = {'Authorization': `Bearer ${user.token}`};
+//   this.http.get('https://localhost:5266/api/users', {headers}).subscribe(users => this.users = users);
+// }
 
+cancelRegisterMode(event: boolean)
+{
+  this.registerMode = event;
+}
 }
