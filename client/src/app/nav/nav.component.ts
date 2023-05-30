@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -13,7 +15,7 @@ model: any = {}
 // currentUser$: Observable<User>;
 // loggedIn: boolean = false; -> din cauza lui currentUser$ este pus in comentariu
 
-constructor(public accountService: AccountService) {}
+constructor(public accountService: AccountService, private router: Router, private toastr: ToastrService) {}
 
 ngOnInit(): void {  
   // this.currentUser$ = this.accountService.currentUser$;
@@ -21,15 +23,17 @@ ngOnInit(): void {
 
 login() {
   this.accountService.login(this.model).subscribe(response => {
-    console.log(response);
+    this.router.navigateByUrl('/members');
     // this.loggedIn = true;
   }, error => {
     console.log(error);
+    this.toastr.error(error.error);
   });
 }
 
 logout() {
   this.accountService.logout();
+  this.router.navigateByUrl('/');
   // this.loggedIn = false;
 }
 
