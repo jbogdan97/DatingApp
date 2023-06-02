@@ -10,6 +10,8 @@ import { Observable, ReplaySubject } from 'rxjs';
 export class AccountService{
 baseUrl = 'https://localhost:5266/api/';
 
+token: string;
+
   constructor(private http: HttpClient) { }
 
   private currentUserSource = new ReplaySubject<User>(1);
@@ -24,6 +26,7 @@ baseUrl = 'https://localhost:5266/api/';
       {
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSource.next(user);
+        this.token = user.token;
       }
     })
    ) 
@@ -44,6 +47,7 @@ return this.http.post(this.baseUrl+'account/register', model).pipe(
 setCurrentUser(user: User)
 {
   this.currentUserSource.next(user);
+  this.token = user.token;
 }
 
 
