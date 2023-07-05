@@ -47,6 +47,7 @@ namespace API.Controllers
     //    }
        //        Varianta asincrona = jos
 
+// [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams)
         {
@@ -77,6 +78,7 @@ Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
 //        }
 //        Varianta asincrona = jos
 
+// [Authorize(Roles = "Member")]
         [HttpGet("{username}", Name ="GetUser")]
         public async Task<ActionResult<MemberDto>> GetUser(string username)
         {
