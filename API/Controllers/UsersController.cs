@@ -87,7 +87,8 @@ Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
         //    return await _context.Users.FindAsync(id);
         // var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(username);
         // return _mapper.Map<MemberDto>(user);
-        return await _unitOfWork.UserRepository.GetMemberAsync(username);
+        var currentUserName = User.GetUsername();
+        return await _unitOfWork.UserRepository.GetMemberAsync(username, isCurrentUser: currentUserName == username);
         }
     
     [HttpPut]
@@ -119,10 +120,10 @@ Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
             PublicId = result.PublicId
           };
 
-          if(user.Photos.Count == 0)
-          {
-            photo.IsMain = true;
-          }
+          // if(user.Photos.Count == 0)
+          // {
+          //   photo.IsMain = true;
+          // }
 
           user.Photos.Add(photo);
 
@@ -152,15 +153,13 @@ Response.AddPaginationHeader(users.CurrentPage, users.PageSize,
 
       if(await _unitOfWork.Complete()) return NoContent();
 
-      return BadRequest("A aparut o problema in setarea pozei de profil");
-
-      
+      return BadRequest("A aparut o problema in setarea pozei de profil");  
     }
 
     [HttpDelete("delete-photo/{photoId}")]
     public async Task<ActionResult> DeletePhoto(int photoId)
     {
-      var user = await _unitOfWork.UserRepository.GetUserByUsernameAsync(User.GetUsername());
+      var user = await _unitOfWork.UserRepository.GetUserByPhotoId(photoId);
 
       var photo = user.Photos.FirstOrDefault(x => x.Id == photoId);
 

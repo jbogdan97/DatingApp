@@ -35,9 +35,11 @@ foreach(var role in roles)
 
             foreach(var user in users)
             {
-                using var hmac = new HMACSHA512();
+                // using var hmac = new HMACSHA512();
 
                 user.UserName =  user.UserName.ToLower();
+
+               user.Photos.First().isApproved = true;
 
                 // user.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("parola"));
                 // user.PasswordSalt = hmac.Key;
